@@ -1,0 +1,80 @@
+{
+  "_comment": [
+    "克莱门莎 (char_4231_clemnt) — custom operator for 六本安洁莉娜Stronghold-Protocol.",
+    "",
+    "Clementia is a 5★ WARRIOR / 本源近卫 (Elemental Guard) from 阿戈尔 (Aegir).",
+    "She does NOT exist in the official character_table snapshot this project uses (she is a 2026 character),",
+    "so her full data must be supplied by patching .cache/gamedata/excel/character_table.json.",
+    "",
+    "This spec supplies the season-side fields: tier, shop slot, bonds, garrison, and base/golden",
+    "chess status. It should be placed at: tools/custom-operators/char_4231_clemnt.json"
+  ],
+
+  "charId": "char_4231_clemnt",
+  "name": "克莱门莎",
+  "baseChessId": "chess_char_5_26_a",
+  "identifier": 270,
+  "tier": 5,
+  "shopSortId": 26,
+  "chessType": "NORMAL",
+  "bonds": ["egirShip"],
+  "unimplementedTokens": [],
+  "defaultSkillIndex": 2,
+  "defaultUniEquipId": null,
+
+  "base": {
+    "phase": "PHASE_2",
+    "level": 1,
+    "skillLevel": 4,
+    "equipLevel": 0,
+    "upgradeNum": 3
+  },
+  "golden": {
+    "phase": "PHASE_2",
+    "level": 60,
+    "skillLevel": 7,
+    "equipLevel": 1
+  },
+
+  "garrisons": [
+    {
+      "desc": "<休整期结束时>本回合每刷新过1次，使已激活的【阿戈尔】层数<@ba.vup>+{count}</>（每回合至多{cap}层）",
+      "eventType": "SERVER_PREP_FIN",
+      "eventTypeDesc": "持续叠加",
+      "eventTypeIcon": "icon_bond",
+      "eventTypeSmallIcon": "s_icon_bond",
+      "effectType": "SERVER_ADD_REFRESH_CNT_MULTIPLIER_BOND_LAYER",
+      "conditionKey": "character_target_inboard",
+      "countBase": 6,
+      "countGolden": 12,
+      "capBase": 18,
+      "capGolden": 36
+    },
+    {
+      "desc": "【阿戈尔】每叠加3层，本干员攻击力<@ba.vup>+{atkPct}%</>",
+      "eventType": "IN_BATTLE",
+      "eventTypeDesc": "作战能力",
+      "eventTypeIcon": "icon_battle",
+      "eventTypeSmallIcon": "s_icon_battle",
+      "effectType": "GAIN_BUFF",
+      "battleRuneKey": "env_gbuff_new_with_verify",
+      "attrByBond": true,
+      "divideNum": 3,
+      "atkPctBase": 1,
+      "atkPctGolden": 2
+    }
+  ],
+
+  "assets": {
+    "_comment": "Feeds tools/fetch-assets.mjs: the upstream URL shape is derived from charId + these fields.",
+    "rarity": "TIER_5",
+    "profession": "WARRIOR",
+    "subProfessionId": "primguard",
+    "nationId": "egir",
+    "skills": [
+      { "index": 0, "skillId": "skchr_clemnt_1", "iconId": "skchr_clemnt_1" },
+      { "index": 1, "skillId": "skchr_clemnt_2", "iconId": "skchr_clemnt_2" },
+      { "index": 2, "skillId": "skchr_clemnt_3", "iconId": "skchr_clemnt_3" }
+    ]
+  }
+}

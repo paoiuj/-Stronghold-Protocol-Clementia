@@ -1,0 +1,102 @@
+{
+  "_comment": [
+    "予愿安洁莉娜 (char_1015_aglna2) — added by the project owner, not part of the official season.",
+    "",
+    "She exists in the official character_table (6* SPECIAL / skywalker 巡空者, nation 罗德岛, hidden",
+    "faction 叙拉古) but the official act2autochess chess roster (charChessDataDict) does not include",
+    "her, so the data pipeline would never emit her. This spec supplies ONLY the season-side fields",
+    "the roster would have supplied: tier, shop slot, bonds, garrison (特质) and the base/golden chess",
+    "status. Every combat field (stats, trait, attack classification, range, skills, talents, the",
+    "S3 summon) is still derived from the official tables by tools/build-data.mjs — nothing about her",
+    "fighting power is invented here.",
+    "",
+    "Design notes (tier / bonds / garrison) — see docs/CUSTOM-OPERATORS.md:",
+    "  * tier 6 / price 4 follows every other tier-6 chess; her closest official analogue is 新约能天使",
+    "    (chess_char_6_13_a), the other 6* SPECIAL alter of the season. Base = PHASE_2 lv1 / elite = PHASE_2 lv60, the",
+    "    tier-6 convention (cf. 新约能天使 / 安洁莉娜), so all three skills are unlocked at both statuses and S3 (her",
+    "    signature) is the default. NOTE: she could also be placed in the tier-1 shop (chess_char_1_21_a, price 2) for",
+    "    testing — that tier's convention is an E1 base, which locks S3 until the elite is merged.",
+    "  * unimplementedTokens: S3's official overrideTokenKey summons token_10071_aglna2_agairp (「\"一会儿见！\"」), an",
+    "    ability-less marker with no upstream art at all. The kit implements S3's 对空庇护 as a buff on her instead, so",
+    "    the token is dropped from the character table entry rather than advertised as a summon that never appears.",
+    "  * base/golden status mirrors her prototype 安洁莉娜 (chess_char_5_20_a/_b): PHASE_2 lv1 ->",
+    "    PHASE_2 lv60. equipLevel 1 with no module id matches 蒂比, the season's other 巡空者.",
+    "  * bonds 【叙拉古】(core, her hidden faction) + 【奇迹】(her prototype's second bond; 予愿",
+    "    'grant a wish' -> miracle) + 【迅捷】(the skywalker/mobility bond 蒂比 also carries).",
+    "  * garrison 「予愿」 is two traits, as the official multi-trait operators do (维娜·维多利亚 garrison_53 + _54):",
+    "    (1) at the end of prep, 安洁莉娜's own refresh-driven add — +8 / +16 layers PER REFRESH this round, hard-capped",
+    "    at 24 / 48 layers (SERVER_ADD_REFRESH_CNT_MULTIPLIER_BOND_LAYER, cf. her prototype garrison_147_a/_b), applied",
+    "    to all three bonds; (2) in battle, this operator's ATK +2% / +4% per 3 layers of those bonds (GAIN_BUFF /",
+    "    act1autochess_gar_eff_attrByBond, cf. 圣聆初雪 garrison_05_a). Trait (1) fires from the board or the bench and",
+    "    only for bonds that are actually active, like every 特质 of this shape."
+  ],
+
+  "charId": "char_1015_aglna2",
+  "name": "予愿安洁莉娜",
+  "baseChessId": "chess_char_6_21_a",
+  "identifier": 266,
+  "tier": 6,
+  "shopSortId": 21,
+  "chessType": "NORMAL",
+  "bonds": ["siracusaShip", "miraShip", "swiftShip"],
+  "unimplementedTokens": ["token_10071_aglna2_agairp"],
+  "defaultSkillIndex": 2,
+  "defaultUniEquipId": null,
+
+  "base": {
+    "phase": "PHASE_2",
+    "level": 1,
+    "skillLevel": 4,
+    "equipLevel": 0,
+    "upgradeNum": 3
+  },
+  "golden": {
+    "phase": "PHASE_2",
+    "level": 60,
+    "skillLevel": 7,
+    "equipLevel": 1
+  },
+
+  "garrisons": [
+    {
+      "desc": "<休整期结束时>本回合每刷新过1次，使已激活的【叙拉古】【奇迹】【迅捷】层数<@ba.vup>+{count}</>（每回合至多{cap}层）",
+      "eventType": "SERVER_PREP_FIN",
+      "eventTypeDesc": "持续叠加",
+      "eventTypeIcon": "icon_bond",
+      "eventTypeSmallIcon": "s_icon_bond",
+      "effectType": "SERVER_ADD_REFRESH_CNT_MULTIPLIER_BOND_LAYER",
+      "conditionKey": "character_target_inboard",
+      "_note": "count = the layers added PER REFRESH this round, cap = the per-round limit (cf. 安洁莉娜 garrison_147_a)",
+      "countBase": 8,
+      "countGolden": 16,
+      "capBase": 24,
+      "capGolden": 48
+    },
+    {
+      "desc": "【叙拉古】【奇迹】【迅捷】每叠加3层，本干员攻击力<@ba.vup>+{atkPct}%</>",
+      "eventType": "IN_BATTLE",
+      "eventTypeDesc": "作战能力",
+      "eventTypeIcon": "icon_battle",
+      "eventTypeSmallIcon": "s_icon_battle",
+      "effectType": "GAIN_BUFF",
+      "battleRuneKey": "env_gbuff_new_with_verify",
+      "attrByBond": true,
+      "divideNum": 3,
+      "atkPctBase": 2,
+      "atkPctGolden": 4
+    }
+  ],
+
+  "assets": {
+    "_comment": "Feeds tools/fetch-assets.mjs (via its custom-operator hook): the upstream URL shape of the avatar / portrait / skill icons (yuanyan) and the battle Spine (fexli) is derived from charId + these fields, so only names are listed here.",
+    "rarity": "TIER_6",
+    "profession": "SPECIAL",
+    "subProfessionId": "skywalker",
+    "nationId": "rhodes",
+    "skills": [
+      { "index": 0, "skillId": "skchr_aglna2_1", "iconId": "skchr_aglna2_1" },
+      { "index": 1, "skillId": "skchr_aglna2_2", "iconId": "skchr_aglna2_2" },
+      { "index": 2, "skillId": "skchr_aglna2_3", "iconId": "skchr_aglna2_3" }
+    ]
+  }
+}
